@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Menu_Items` (
   `Menu_ItemsID` INT NOT NULL AUTO_INCREMENT,
   `Course_Name` VARCHAR(45) NOT NULL,
   `Starter_Name` VARCHAR(45) NULL,
-  `Desert_Name` VARCHAR(45) NULL,
+  `Desert_Name` VARCHAR(45) NOT NULL,
+  `DrinkName` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`Menu_ItemsID`))
 ENGINE = InnoDB;
 
@@ -45,8 +46,6 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Menus` (
   `MenuID` INT NOT NULL AUTO_INCREMENT,
   `Menu_ItemsID` INT NOT NULL,
   `Menu_Name` VARCHAR(45) NOT NULL,
-  `Price` INT NULL,
-  `Quantity` INT NULL,
   PRIMARY KEY (`MenuID`),
   INDEX `menu_items_id_fk_idx` (`Menu_ItemsID` ASC) VISIBLE,
   CONSTRAINT `menu_items_id_fk`
@@ -64,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Customers` (
   `CustomerID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NULL,
-  `Contact_Number` INT NULL,
+  `Contact_Number` VARCHAR(45) NULL,
   PRIMARY KEY (`CustomerID`))
 ENGINE = InnoDB;
 
@@ -81,6 +80,32 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `littlelemondm`.`Waiters`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `littlelemondm`.`Waiters` (
+  `WaiterID` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(45) NOT NULL,
+  `Salary` INT NULL,
+  `Shift` VARCHAR(45) NOT NULL,
+  `Contact_Number` VARCHAR(45) NULL,
+  PRIMARY KEY (`WaiterID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `littlelemondm`.`Cooks`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `littlelemondm`.`Cooks` (
+  `CookID` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(45) NULL,
+  `Salary` INT NULL,
+  `Shift` VARCHAR(45) NULL,
+  `Contact_Number` VARCHAR(45) NULL,
+  PRIMARY KEY (`CookID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `littlelemondm`.`Orders`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `littlelemondm`.`Orders` (
@@ -91,13 +116,15 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Orders` (
   `Date_time` DATETIME NOT NULL,
   `WaiterID` INT NOT NULL,
   `CookID` INT NOT NULL,
-  `DrinkID` INT NOT NULL,
   `TableID` INT NOT NULL,
+  `TotalCost` INT NOT NULL,
   PRIMARY KEY (`OrdersID`),
   INDEX `orders_delivery_id_fk_idx` (`OrdersDeliveryID` ASC) VISIBLE,
   INDEX `menu_id_fk_idx` (`MenuID` ASC) VISIBLE,
   INDEX `customer_id_fk_idx` (`CustomerID` ASC) VISIBLE,
   INDEX `table_id_fk_idx` (`TableID` ASC) VISIBLE,
+  INDEX `waiter_id_fk1_idx` (`WaiterID` ASC) VISIBLE,
+  INDEX `cook_id_fk_idx` (`CookID` ASC) VISIBLE,
   CONSTRAINT `orders_delivery_id_fk`
     FOREIGN KEY (`OrdersDeliveryID`)
     REFERENCES `littlelemondm`.`Orders_Deliveries` (`Order_DeliveryID`)
@@ -113,9 +140,19 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Orders` (
     REFERENCES `littlelemondm`.`Customers` (`CustomerID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `table_id_fk`
+  CONSTRAINT `table_id_fk1`
     FOREIGN KEY (`TableID`)
     REFERENCES `littlelemondm`.`Tables` (`TableID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `waiter_id_fk`
+    FOREIGN KEY (`WaiterID`)
+    REFERENCES `littlelemondm`.`Waiters` (`WaiterID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `cook_id_fk`
+    FOREIGN KEY (`CookID`)
+    REFERENCES `littlelemondm`.`Cooks` (`CookID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -150,45 +187,6 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Bookings` (
     REFERENCES `littlelemondm`.`Customers` (`CustomerID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `littlelemondm`.`Waiters`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `littlelemondm`.`Waiters` (
-  `WaiterID` INT NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(45) NOT NULL,
-  `Salary` INT NULL,
-  `Shift` VARCHAR(45) NOT NULL,
-  `Contact_Number` INT NULL,
-  PRIMARY KEY (`WaiterID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `littlelemondm`.`Cooks`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `littlelemondm`.`Cooks` (
-  `CookID` INT NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(45) NULL,
-  `Salary` INT NULL,
-  `Shift` VARCHAR(45) NULL,
-  `Contact_Number` INT NULL,
-  PRIMARY KEY (`CookID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `littlelemondm`.`Drinks`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `littlelemondm`.`Drinks` (
-  `DrinkID` INT NOT NULL,
-  `Name` VARCHAR(45) NOT NULL,
-  `Price` INT NULL,
-  `Size` VARCHAR(45) NULL,
-  `Quantity` INT NOT NULL,
-  PRIMARY KEY (`DrinkID`))
 ENGINE = InnoDB;
 
 
