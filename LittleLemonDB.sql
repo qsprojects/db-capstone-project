@@ -86,7 +86,6 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Waiters` (
   `WaiterID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
   `Salary` INT NULL,
-  `Shift` VARCHAR(45) NOT NULL,
   `Contact_Number` VARCHAR(45) NULL,
   PRIMARY KEY (`WaiterID`))
 ENGINE = InnoDB;
@@ -99,7 +98,6 @@ CREATE TABLE IF NOT EXISTS `littlelemondm`.`Cooks` (
   `CookID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NULL,
   `Salary` INT NULL,
-  `Shift` VARCHAR(45) NULL,
   `Contact_Number` VARCHAR(45) NULL,
   PRIMARY KEY (`CookID`))
 ENGINE = InnoDB;
@@ -164,7 +162,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `littlelemondm`.`Bookings` (
   `BookingID` INT NOT NULL AUTO_INCREMENT,
   `OrderID` INT NOT NULL,
-  `DateTime` DATETIME NOT NULL,
+  `Booking_Date` DATETIME NOT NULL,
   `NumberOfPeople` INT NULL,
   `TableID` INT NOT NULL,
   `CustomerID` INT NOT NULL,
